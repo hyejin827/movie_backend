@@ -10,8 +10,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +27,10 @@ public class TestController {
 
     public static final String COLLECTION_NAME="user";
 
+
     @RequestMapping("/welcome")
     public User welcome() {
+
         try {
 
             FileInputStream serviceAccount =
@@ -53,60 +54,25 @@ public class TestController {
                 System.out.println(options);
             }
 
+            log.info("firebaseApp==========> {}", firebaseApp);
+
             //-----------연결------------------------
 
-//            mDatabase = FirebaseDatabase.getInstance().getReference("user");
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("user");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    User document = snapshot.getValue(User.class);
+                    System.out.println(document);
+                }
 
+                @Override
+                public void onCancelled(DatabaseError error) {
 
-//            Firestore firestore = FirestoreClient.getFirestore();
-//
-//            DocumentReference documentReference = firestore.collection(COLLECTION_NAME).document("hyejin");
-//
-//            ApiFuture<DocumentSnapshot> apiFuture = documentReference.get();
-//
-//            DocumentSnapshot documentSnapshot = apiFuture.get();
-//
-//            User user = null;
-//
-//            if(documentSnapshot.exists()) {
-//
-//                user = documentSnapshot.toObject(User.class);
-//
-//                return user;
-//
-//            } else {
-//
-//                return null;
-//
-//            }
+                }
+            });
 
-//            log.info("firebaseApp==========> {}", mDatabase);
-
-//            Firestore dbFirestore = FirestoreClient.getFirestore();
-//            DocumentReference documentReference = dbFirestore.collection("user").document();
-//            ApiFuture<DocumentSnapshot> future = documentReference.get();
-//
-//            DocumentSnapshot document = future.get();
-//
-//            User user = null;
-//
-//            if(document.exists()) {
-//                user = document.toObject(User.class);
-//                return user.getName();
-//            }else {
-//                return null;
-//            }
-
-
-//            FileInputStream serviceAccount =
-//                    new FileInputStream("./src/main/resources/movie-vupring-firebase-adminsdk-exp9e-7c7b23a48a.json");
-//
-//            FirebaseOptions options = new FirebaseOptions.Builder()
-//                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-//                    .setDatabaseUrl("https://movie-vupring-default-rtdb.firebaseio.com/")
-//                    .build();
-//
-//            FirebaseApp.initializeApp(options);
 
         } catch (Exception e){
             e.printStackTrace();
