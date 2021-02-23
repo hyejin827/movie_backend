@@ -53,30 +53,32 @@ public class TestController {
                 System.out.println(options);
             }
 
+            //-----------연결------------------------
+
 //            mDatabase = FirebaseDatabase.getInstance().getReference("user");
 
 
-            Firestore firestore = FirestoreClient.getFirestore();
-
-            DocumentReference documentReference = firestore.collection(COLLECTION_NAME).document("hyejin");
-
-            ApiFuture<DocumentSnapshot> apiFuture = documentReference.get();
-
-            DocumentSnapshot documentSnapshot = apiFuture.get();
-
-            User user = null;
-
-            if(documentSnapshot.exists()) {
-
-                user = documentSnapshot.toObject(User.class);
-
-                return user;
-
-            } else {
-
-                return null;
-
-            }
+//            Firestore firestore = FirestoreClient.getFirestore();
+//
+//            DocumentReference documentReference = firestore.collection(COLLECTION_NAME).document("hyejin");
+//
+//            ApiFuture<DocumentSnapshot> apiFuture = documentReference.get();
+//
+//            DocumentSnapshot documentSnapshot = apiFuture.get();
+//
+//            User user = null;
+//
+//            if(documentSnapshot.exists()) {
+//
+//                user = documentSnapshot.toObject(User.class);
+//
+//                return user;
+//
+//            } else {
+//
+//                return null;
+//
+//            }
 
 //            log.info("firebaseApp==========> {}", mDatabase);
 
